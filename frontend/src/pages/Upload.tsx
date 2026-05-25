@@ -128,6 +128,11 @@ export default function Upload() {
                 <p className="text-sm text-emerald-600">
                   File "{result.filename}" processed — {result.original_rows} rows, {result.original_columns} columns
                 </p>
+                {result.model_retrained && (
+                  <p className="text-sm text-emerald-700 font-medium mt-1">
+                    🧠 Model automatically retrained with new data! (RF R²: {result.training_result?.rf_r2?.toFixed(3)})
+                  </p>
+                )}
               </div>
             </div>
           </div>

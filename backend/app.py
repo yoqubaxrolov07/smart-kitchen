@@ -214,6 +214,20 @@ def upload_csv():
         os.makedirs(os.path.dirname(clean_path), exist_ok=True)
         df_clean.to_csv(clean_path, index=False)
         
+        # Also save as the main raw data (so dashboard and predict use this data)
+        main_data_path = os.path.join(DATA_DIR, "raw", "smartkitchen_ai_dataset.csv")
+        df.to_csv(main_data_path, index=False)
+        
+        # AUTO-RETRAIN: Retrain models with the new uploaded data
+        train_report = None
+        try:
+            from train_model import train_models
+            train_report = train_models(main_data_path)
+            global models
+            models = load_models()
+        except Exception as train_err:
+            train_report = {"error": str(train_err)}
+        
         return jsonify({
             "status": "success",
             "filename": file.filename,
@@ -227,6 +241,11 @@ def upload_csv():
             "cleaned_rows": len(df_clean),
             "cleaning_report": missing_report,
             "saved_to": clean_path,
+            "model_retrained": train_report is not None and "error" not in (train_report or {}),
+            "training_result": {
+                "rf_r2": train_report.get("random_forest", {}).get("r2_score") if train_report and "error" not in train_report else None,
+                "lr_r2": train_report.get("linear_regression", {}).get("r2_score") if train_report and "error" not in train_report else None,
+            } if train_report else None,
         })
     
     except Exception as e:
