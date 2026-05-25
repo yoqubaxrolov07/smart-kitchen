@@ -14,7 +14,8 @@ export const trainModels = () => api.post('/train');
 export const compareModels = () => api.get('/compare-models');
 export const getFeatureImportance = () => api.get('/feature-importance');
 export const getRecipes = (ingredients: string[]) => api.post('/recipes', { ingredients });
-export const askGemini = (message: string) => api.post('/gemini', { message });
+export const askGemini = (message: string, history?: Array<{role: string, content: string}>) => 
+  api.post('/gemini', { message, history: history || [] });
 export const getPipeline = () => api.get('/pipeline');
 export const uploadCSV = (file: File) => {
   const formData = new FormData();

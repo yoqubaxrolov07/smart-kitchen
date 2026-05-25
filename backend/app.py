@@ -14,6 +14,16 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import joblib
 
+# Load .env file if exists
+env_path = os.path.join(os.path.dirname(__file__), '.env')
+if os.path.exists(env_path):
+    with open(env_path) as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith('#') and '=' in line:
+                key, value = line.split('=', 1)
+                os.environ.setdefault(key.strip(), value.strip())
+
 # Add ML module to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'ml'))
 from preprocessing import (
@@ -388,6 +398,7 @@ def gemini_assistant():
     try:
         data = request.get_json()
         user_message = data.get('message', '')
+        chat_history = data.get('history', [])
         
         if not user_message:
             return jsonify({"error": "Message cannot be empty."}), 400
@@ -396,18 +407,56 @@ def gemini_assistant():
         api_key = os.environ.get('GEMINI_API_KEY')
         
         if api_key:
-            import requests
+            import requests as req_lib
             url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
             
+            # Build conversation with system instruction
+            system_prompt = """You are SmartKitchen AI assistant — a helpful cooking and food waste reduction expert. 
+Your responsibilities:
+1. Suggest creative recipes based on available ingredients
+2. Provide practical food waste reduction tips for restaurants and homes
+3. Answer cooking questions (temperatures, times, substitutions)
+4. Give food storage advice to extend shelf life
+5. Help with meal planning to minimize waste
+
+Rules:
+- Keep responses concise (2-4 paragraphs max)
+- Use bullet points for lists
+- Be friendly and encouraging
+- If asked about non-food topics, politely redirect to food/cooking
+- Include practical, actionable advice
+- Mention sustainability when relevant"""
+
+            # Build contents with history
+            contents = []
+            
+            # Add previous messages if available
+            for msg in chat_history[-6:]:  # Last 6 messages for context
+                contents.append({
+                    "role": "user" if msg.get("role") == "user" else "model",
+                    "parts": [{"text": msg.get("content", "")}]
+                })
+            
+            # Add current message
+            contents.append({
+                "role": "user",
+                "parts": [{"text": user_message}]
+            })
+            
             payload = {
-                "contents": [{
-                    "parts": [{
-                        "text": f"You are SmartKitchen AI assistant. Help with cooking, recipes, and food waste reduction. User asks: {user_message}"
-                    }]
-                }]
+                "system_instruction": {
+                    "parts": [{"text": system_prompt}]
+                },
+                "contents": contents,
+                "generationConfig": {
+                    "temperature": 0.7,
+                    "maxOutputTokens": 800,
+                    "topP": 0.9
+                }
             }
             
-            response = requests.post(url, json=payload, timeout=10)
+            response = req_lib.post(url, json=payload, timeout=15)
+            
             if response.status_code == 200:
                 result = response.json()
                 ai_text = result['candidates'][0]['content']['parts'][0]['text']
@@ -416,25 +465,28 @@ def gemini_assistant():
                     "source": "gemini",
                     "model": "gemini-2.0-flash"
                 })
+            else:
+                # API error — fall through to fallback
+                print(f"Gemini API error: {response.status_code} - {response.text[:200]}")
         
         # Fallback: rule-based responses
         fallback_responses = {
-            "recipe": "I'd suggest making a simple stir-fry! Use whatever vegetables you have, add soy sauce, garlic, and serve over rice. It's a great way to use up leftover ingredients and reduce waste.",
-            "waste": "To reduce food waste: 1) Plan meals weekly, 2) Store food properly (FIFO method), 3) Use leftovers creatively, 4) Compost what you can't eat, 5) Track your waste to identify patterns.",
-            "tip": "Did you know? The average restaurant wastes 4-10% of purchased food. By predicting demand with AI, you can reduce over-preparation by up to 30%.",
-            "storage": "Best storage tips: Keep herbs in water like flowers, store bananas separately (they release ethylene), use airtight containers for cut vegetables, and freeze bread you won't use within 3 days.",
-            "default": "I'm SmartKitchen AI assistant! I can help with: 1) Recipe suggestions based on your ingredients, 2) Food waste reduction tips, 3) Storage advice, 4) Meal planning. What would you like to know?"
+            "recipe": "Here are some ideas to use your ingredients:\n\n- **Stir-fry**: Quick and versatile — any vegetables + protein + soy sauce over rice\n- **Soup**: Combine leftover veggies in broth with herbs\n- **Omelette**: Eggs + any cheese, vegetables, or meat you have\n- **Fried rice**: Day-old rice + egg + any vegetables + soy sauce\n\nTip: The key to reducing waste is cooking what you already have!",
+            "waste": "Top food waste reduction strategies:\n\n- **Plan meals weekly** and buy only what you need\n- **FIFO method** (First In, First Out) — use oldest ingredients first\n- **Store properly**: herbs in water, bread in freezer, tomatoes at room temperature\n- **Batch cook**: Make large portions and freeze extras\n- **Track waste**: Keep a log for 1 week to identify patterns\n\nRestaurants can reduce waste by 20-30% with demand prediction!",
+            "tip": "Quick kitchen tip: The average household throws away 30% of purchased food. Here's how to cut that:\n\n1. **Freeze before it spoils** — most foods freeze well for 2-3 months\n2. **Use 'ugly' produce** — imperfect fruits are perfect for smoothies\n3. **Leftover night** — designate one dinner per week for leftovers\n4. **Portion control** — serve smaller plates, people can always get seconds\n5. **Compost** what you can't eat — closes the cycle",
+            "storage": "Smart food storage guide:\n\n- **Fridge (0-4°C):** Dairy, cooked food, cut vegetables, meat\n- **Counter:** Tomatoes, bananas, avocados (until ripe), onions, garlic\n- **Freezer:** Bread (slice first), herbs in olive oil (ice cube trays), cooked grains\n- **Airtight containers:** Cut veggies stay fresh 5-7 days vs 2-3 days open\n\nGolden rule: Don't wash berries until ready to eat — moisture causes mould!",
+            "default": "I'm SmartKitchen AI assistant! I can help you with:\n\n🍳 **Recipe suggestions** — tell me what ingredients you have\n🥗 **Food waste reduction** — practical tips for home or restaurant\n📦 **Storage advice** — how to keep food fresh longer\n📋 **Meal planning** — reduce shopping waste\n🌡️ **Cooking questions** — temperatures, times, substitutions\n\nWhat would you like help with today?"
         }
         
         # Simple keyword matching for fallback
         msg_lower = user_message.lower()
-        if any(w in msg_lower for w in ['recipe', 'cook', 'make', 'ingredient']):
+        if any(w in msg_lower for w in ['recipe', 'cook', 'make', 'ingredient', 'dinner', 'lunch', 'breakfast']):
             response_text = fallback_responses['recipe']
-        elif any(w in msg_lower for w in ['waste', 'reduce', 'throw', 'spoil']):
+        elif any(w in msg_lower for w in ['waste', 'reduce', 'throw', 'spoil', 'expire', 'rotten']):
             response_text = fallback_responses['waste']
-        elif any(w in msg_lower for w in ['store', 'keep', 'fresh', 'fridge']):
+        elif any(w in msg_lower for w in ['store', 'keep', 'fresh', 'fridge', 'freeze', 'shelf']):
             response_text = fallback_responses['storage']
-        elif any(w in msg_lower for w in ['tip', 'advice', 'suggest']):
+        elif any(w in msg_lower for w in ['tip', 'advice', 'suggest', 'help', 'idea']):
             response_text = fallback_responses['tip']
         else:
             response_text = fallback_responses['default']
@@ -442,7 +494,7 @@ def gemini_assistant():
         return jsonify({
             "response": response_text,
             "source": "fallback",
-            "note": "Set GEMINI_API_KEY environment variable for AI-powered responses"
+            "note": "Set GEMINI_API_KEY in backend/.env for AI-powered responses"
         })
     
     except Exception as e:

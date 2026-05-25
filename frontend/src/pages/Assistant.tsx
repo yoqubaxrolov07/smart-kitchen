@@ -28,7 +28,10 @@ export default function Assistant() {
     setLoading(true);
 
     try {
-      const res = await askGemini(userMessage);
+      const history = messages
+        .filter(m => m.source !== 'system')
+        .map(m => ({ role: m.role, content: m.content }));
+      const res = await askGemini(userMessage, history);
       setMessages(prev => [...prev, {
         role: 'assistant',
         content: res.data.response,
