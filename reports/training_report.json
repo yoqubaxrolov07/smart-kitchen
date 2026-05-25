@@ -1,0 +1,181 @@
+{
+  "preprocessing": {
+    "original_shape": [
+      1236,
+      11
+    ],
+    "duplicates_removed": 11,
+    "missing_values_handled": {
+      "meals_served": {
+        "missing_count": 193,
+        "filled_with": "median=171.50"
+      },
+      "temp_c": {
+        "missing_count": 176,
+        "filled_with": "median=16.60"
+      },
+      "waste_kg": {
+        "missing_count": 165,
+        "filled_with": "median=2.82"
+      },
+      "checkout_price": {
+        "missing_count": 171,
+        "filled_with": "median=40243.00"
+      },
+      "base_price": {
+        "missing_count": 170,
+        "filled_with": "median=30676.00"
+      }
+    },
+    "encodings": {
+      "day_of_week": [
+        "day_Friday",
+        "day_Monday",
+        "day_Saturday",
+        "day_Sunday",
+        "day_Thursday",
+        "day_Tuesday",
+        "day_Wednesday"
+      ],
+      "food_item": {
+        "Beef Steak": 0,
+        "Burger & Fries": 1,
+        "Caesar Salad": 2,
+        "Chicken Tikka": 3,
+        "Fish and Chips": 4,
+        "Grilled Chicken": 5,
+        "Lagman": 6,
+        "Lamb Kebab": 7,
+        "Manti": 8,
+        "Margherita Pizza": 9,
+        "Mushroom Risotto": 10,
+        "Pasta Carbonara": 11,
+        "Plov": 12,
+        "Samsa": 13,
+        "Seafood Paella": 14,
+        "Shashlik": 15,
+        "Sushi Set": 16,
+        "Thai Green Curry": 17,
+        "Tom Yum Soup": 18,
+        "Vegetable Stir Fry": 19
+      }
+    },
+    "final_shape": [
+      1225,
+      18
+    ]
+  },
+  "split": {
+    "train": 980,
+    "test": 245,
+    "ratio": "80/20"
+  },
+  "linear_regression": {
+    "model_name": "Linear Regression",
+    "mae": 0.9867,
+    "rmse": 1.4235,
+    "r2_score": 0.4973,
+    "predictions_sample": [
+      3.5184262651990226,
+      3.2941769063020407,
+      4.897642196831553,
+      2.974126399816468,
+      2.584799306323325,
+      3.331914918207824,
+      2.931913634506863,
+      2.5715056853513083,
+      2.013391434822647,
+      1.8059789786900844
+    ],
+    "actuals_sample": [
+      5.06,
+      3.42,
+      5.81,
+      2.99,
+      1.24,
+      2.09,
+      5.35,
+      1.67,
+      3.29,
+      2.8
+    ],
+    "cv_r2_mean": 0.447,
+    "cv_r2_std": 0.0466
+  },
+  "random_forest": {
+    "model_name": "Random Forest",
+    "mae": 1.0438,
+    "rmse": 1.4771,
+    "r2_score": 0.4588,
+    "predictions_sample": [
+      3.9447269587329874,
+      2.7455725067372736,
+      4.477608462093463,
+      2.72598431759417,
+      2.6455361017740415,
+      4.058484003517411,
+      2.9645454032895606,
+      3.0293200332423673,
+      2.6704238888888883,
+      2.1617132900432905
+    ],
+    "actuals_sample": [
+      5.06,
+      3.42,
+      5.81,
+      2.99,
+      1.24,
+      2.09,
+      5.35,
+      1.67,
+      3.29,
+      2.8
+    ],
+    "cv_r2_mean": 0.3983,
+    "cv_r2_std": 0.0504,
+    "feature_importance": {
+      "meals_served": 0.4411,
+      "temp_c": 0.112,
+      "is_holiday": 0.0893,
+      "price_ratio": 0.081,
+      "checkout_price": 0.0633,
+      "base_price": 0.0594,
+      "food_item_encoded": 0.04,
+      "month": 0.0336,
+      "homepage_featured": 0.0171,
+      "emailer_for_promotion": 0.0161,
+      "day_Sunday": 0.0146,
+      "day_Saturday": 0.0114,
+      "day_Tuesday": 0.0058,
+      "day_Wednesday": 0.0043,
+      "day_Monday": 0.0039,
+      "day_Friday": 0.0038,
+      "day_Thursday": 0.0032
+    }
+  },
+  "model_meta": {
+    "features": [
+      "meals_served",
+      "temp_c",
+      "is_holiday",
+      "checkout_price",
+      "base_price",
+      "homepage_featured",
+      "emailer_for_promotion",
+      "food_item_encoded",
+      "price_ratio",
+      "month",
+      "day_Friday",
+      "day_Monday",
+      "day_Saturday",
+      "day_Sunday",
+      "day_Thursday",
+      "day_Tuesday",
+      "day_Wednesday"
+    ],
+    "trained_at": "2026-05-25T12:36:31.086158",
+    "train_size": 980,
+    "test_size": 245,
+    "dataset_rows": 1225
+  }
+}

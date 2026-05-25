@@ -1,0 +1,25 @@
+{
+  "features": [
+    "meals_served",
+    "temp_c",
+    "is_holiday",
+    "checkout_price",
+    "base_price",
+    "homepage_featured",
+    "emailer_for_promotion",
+    "food_item_encoded",
+    "price_ratio",
+    "month",
+    "day_Friday",
+    "day_Monday",
+    "day_Saturday",
+    "day_Sunday",
+    "day_Thursday",
+    "day_Tuesday",
+    "day_Wednesday"
+  ],
+  "trained_at": "2026-05-25T12:36:31.086158",
+  "train_size": 980,
+  "test_size": 245,
+  "dataset_rows": 1225
+}

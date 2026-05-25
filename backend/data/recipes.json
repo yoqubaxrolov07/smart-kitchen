@@ -1,0 +1,362 @@
+[
+  {
+    "id": 1,
+    "name": "Chicken Fried Rice",
+    "cuisine": "Asian",
+    "ingredients": ["chicken", "rice", "egg", "soy sauce", "garlic", "onion", "carrot", "oil"],
+    "prep_time": 20,
+    "instructions": "Cook rice, stir-fry vegetables, add diced chicken, scramble egg, mix with soy sauce."
+  },
+  {
+    "id": 2,
+    "name": "Tomato Rice Bowl",
+    "cuisine": "Mediterranean",
+    "ingredients": ["rice", "tomato", "olive oil", "garlic", "onion", "basil", "salt"],
+    "prep_time": 25,
+    "instructions": "Sauté onion and garlic, add diced tomatoes, cook rice in tomato mixture."
+  },
+  {
+    "id": 3,
+    "name": "Simple Chicken Salad",
+    "cuisine": "Western",
+    "ingredients": ["chicken", "lettuce", "tomato", "cucumber", "olive oil", "lemon"],
+    "prep_time": 15,
+    "instructions": "Grill chicken, chop vegetables, toss together with olive oil and lemon dressing."
+  },
+  {
+    "id": 4,
+    "name": "Classic Plov",
+    "cuisine": "Uzbek",
+    "ingredients": ["rice", "lamb", "carrot", "onion", "oil", "cumin", "garlic", "salt"],
+    "prep_time": 90,
+    "instructions": "Fry onion and meat, add carrots, layer rice on top, steam until done."
+  },
+  {
+    "id": 5,
+    "name": "Pasta Carbonara",
+    "cuisine": "Italian",
+    "ingredients": ["pasta", "egg", "bacon", "parmesan", "black pepper", "garlic"],
+    "prep_time": 20,
+    "instructions": "Cook pasta, fry bacon, mix egg with parmesan, combine off heat."
+  },
+  {
+    "id": 6,
+    "name": "Vegetable Stir Fry",
+    "cuisine": "Asian",
+    "ingredients": ["broccoli", "carrot", "bell pepper", "soy sauce", "garlic", "ginger", "oil"],
+    "prep_time": 15,
+    "instructions": "Heat oil, stir-fry vegetables on high heat, add soy sauce and ginger."
+  },
+  {
+    "id": 7,
+    "name": "Beef Burger",
+    "cuisine": "American",
+    "ingredients": ["beef", "bun", "lettuce", "tomato", "onion", "cheese", "ketchup"],
+    "prep_time": 25,
+    "instructions": "Form beef patties, grill, assemble with toppings in bun."
+  },
+  {
+    "id": 8,
+    "name": "Chicken Tikka Masala",
+    "cuisine": "Indian",
+    "ingredients": ["chicken", "yogurt", "tomato", "cream", "onion", "garlic", "ginger", "spices"],
+    "prep_time": 45,
+    "instructions": "Marinate chicken in yogurt, grill, simmer in spiced tomato cream sauce."
+  },
+  {
+    "id": 9,
+    "name": "Caesar Salad",
+    "cuisine": "Western",
+    "ingredients": ["lettuce", "parmesan", "croutons", "egg", "garlic", "olive oil", "lemon"],
+    "prep_time": 15,
+    "instructions": "Toss romaine with Caesar dressing, top with croutons and parmesan."
+  },
+  {
+    "id": 10,
+    "name": "Shashlik (Grilled Kebab)",
+    "cuisine": "Uzbek",
+    "ingredients": ["lamb", "onion", "vinegar", "salt", "pepper", "tomato"],
+    "prep_time": 120,
+    "instructions": "Marinate lamb cubes in onion-vinegar mix, thread on skewers, grill over charcoal."
+  },
+  {
+    "id": 11,
+    "name": "Egg Omelette",
+    "cuisine": "Universal",
+    "ingredients": ["egg", "milk", "butter", "salt", "pepper", "cheese"],
+    "prep_time": 10,
+    "instructions": "Whisk eggs with milk, cook in buttered pan, fold with cheese."
+  },
+  {
+    "id": 12,
+    "name": "Lagman Noodle Soup",
+    "cuisine": "Uzbek",
+    "ingredients": ["noodles", "beef", "tomato", "bell pepper", "onion", "garlic", "oil"],
+    "prep_time": 60,
+    "instructions": "Pull noodles, make beef and vegetable broth, serve noodles in hot soup."
+  },
+  {
+    "id": 13,
+    "name": "Mushroom Risotto",
+    "cuisine": "Italian",
+    "ingredients": ["rice", "mushroom", "onion", "garlic", "butter", "parmesan", "white wine"],
+    "prep_time": 40,
+    "instructions": "Toast rice, add broth gradually while stirring, fold in mushrooms and parmesan."
+  },
+  {
+    "id": 14,
+    "name": "Fish and Chips",
+    "cuisine": "British",
+    "ingredients": ["fish", "potato", "flour", "egg", "oil", "salt", "lemon"],
+    "prep_time": 30,
+    "instructions": "Batter fish in flour-egg mix, deep fry with potato chips."
+  },
+  {
+    "id": 15,
+    "name": "Tomato Soup",
+    "cuisine": "Western",
+    "ingredients": ["tomato", "onion", "garlic", "cream", "basil", "butter", "salt"],
+    "prep_time": 30,
+    "instructions": "Roast tomatoes, blend with sautéed onion and garlic, add cream."
+  },
+  {
+    "id": 16,
+    "name": "Grilled Chicken Breast",
+    "cuisine": "Western",
+    "ingredients": ["chicken", "olive oil", "garlic", "lemon", "herbs", "salt", "pepper"],
+    "prep_time": 25,
+    "instructions": "Marinate chicken in herbs and lemon, grill until golden."
+  },
+  {
+    "id": 17,
+    "name": "Potato Mash",
+    "cuisine": "Western",
+    "ingredients": ["potato", "butter", "milk", "salt", "pepper"],
+    "prep_time": 25,
+    "instructions": "Boil potatoes, mash with butter and warm milk until smooth."
+  },
+  {
+    "id": 18,
+    "name": "Thai Green Curry",
+    "cuisine": "Thai",
+    "ingredients": ["chicken", "coconut milk", "green curry paste", "bell pepper", "basil", "rice"],
+    "prep_time": 30,
+    "instructions": "Simmer chicken in coconut milk with curry paste, add vegetables, serve with rice."
+  },
+  {
+    "id": 19,
+    "name": "Samsa (Meat Pastry)",
+    "cuisine": "Uzbek",
+    "ingredients": ["flour", "lamb", "onion", "butter", "salt", "cumin"],
+    "prep_time": 90,
+    "instructions": "Make layered dough, fill with spiced minced lamb and onion, bake in tandoor."
+  },
+  {
+    "id": 20,
+    "name": "Spaghetti Bolognese",
+    "cuisine": "Italian",
+    "ingredients": ["pasta", "beef", "tomato", "onion", "garlic", "carrot", "celery", "olive oil"],
+    "prep_time": 45,
+    "instructions": "Brown beef mince, simmer in tomato sauce with vegetables, serve over spaghetti."
+  },
+  {
+    "id": 21,
+    "name": "Banana Smoothie",
+    "cuisine": "Universal",
+    "ingredients": ["banana", "milk", "honey", "ice"],
+    "prep_time": 5,
+    "instructions": "Blend banana, milk, honey and ice until smooth."
+  },
+  {
+    "id": 22,
+    "name": "Greek Salad",
+    "cuisine": "Mediterranean",
+    "ingredients": ["cucumber", "tomato", "onion", "feta", "olive oil", "olives"],
+    "prep_time": 10,
+    "instructions": "Chop vegetables, top with feta and olives, drizzle olive oil."
+  },
+  {
+    "id": 23,
+    "name": "Manti (Uzbek Dumplings)",
+    "cuisine": "Uzbek",
+    "ingredients": ["flour", "beef", "onion", "salt", "pepper", "yogurt"],
+    "prep_time": 90,
+    "instructions": "Make dough, fill with seasoned beef and onion, steam in mantovarka."
+  },
+  {
+    "id": 24,
+    "name": "Pancakes",
+    "cuisine": "Western",
+    "ingredients": ["flour", "egg", "milk", "sugar", "butter", "vanilla"],
+    "prep_time": 20,
+    "instructions": "Mix batter, cook on griddle until bubbles form, flip and serve with syrup."
+  },
+  {
+    "id": 25,
+    "name": "Chicken Wrap",
+    "cuisine": "Western",
+    "ingredients": ["chicken", "tortilla", "lettuce", "tomato", "mayo", "cheese"],
+    "prep_time": 15,
+    "instructions": "Grill chicken, slice, wrap in tortilla with fresh vegetables and mayo."
+  },
+  {
+    "id": 26,
+    "name": "Onion Soup",
+    "cuisine": "French",
+    "ingredients": ["onion", "butter", "beef broth", "bread", "cheese", "garlic"],
+    "prep_time": 45,
+    "instructions": "Caramelize onions slowly, add broth, top with bread and melted cheese."
+  },
+  {
+    "id": 27,
+    "name": "Seafood Paella",
+    "cuisine": "Spanish",
+    "ingredients": ["rice", "shrimp", "mussel", "saffron", "bell pepper", "garlic", "tomato", "olive oil"],
+    "prep_time": 50,
+    "instructions": "Toast rice in saffron oil, add seafood and broth, cook uncovered until rice absorbs liquid."
+  },
+  {
+    "id": 28,
+    "name": "Garlic Bread",
+    "cuisine": "Italian",
+    "ingredients": ["bread", "butter", "garlic", "parsley", "salt"],
+    "prep_time": 10,
+    "instructions": "Mix butter with minced garlic and parsley, spread on bread, bake until crispy."
+  },
+  {
+    "id": 29,
+    "name": "Beef Stew",
+    "cuisine": "Western",
+    "ingredients": ["beef", "potato", "carrot", "onion", "celery", "tomato", "garlic"],
+    "prep_time": 90,
+    "instructions": "Brown beef, add vegetables and broth, simmer for 2 hours until tender."
+  },
+  {
+    "id": 30,
+    "name": "Avocado Toast",
+    "cuisine": "Modern",
+    "ingredients": ["bread", "avocado", "lemon", "salt", "pepper", "egg"],
+    "prep_time": 10,
+    "instructions": "Toast bread, mash avocado with lemon and salt, spread on toast, top with egg."
+  },
+  {
+    "id": 31,
+    "name": "Chicken Noodle Soup",
+    "cuisine": "Western",
+    "ingredients": ["chicken", "noodles", "carrot", "celery", "onion", "garlic", "salt"],
+    "prep_time": 40,
+    "instructions": "Simmer chicken in broth, add vegetables and noodles, cook until tender."
+  },
+  {
+    "id": 32,
+    "name": "Margherita Pizza",
+    "cuisine": "Italian",
+    "ingredients": ["flour", "tomato", "mozzarella", "basil", "olive oil", "yeast"],
+    "prep_time": 60,
+    "instructions": "Make dough, spread tomato sauce, add mozzarella and basil, bake at high heat."
+  },
+  {
+    "id": 33,
+    "name": "Lamb Kebab",
+    "cuisine": "Middle Eastern",
+    "ingredients": ["lamb", "onion", "garlic", "cumin", "coriander", "yogurt", "bread"],
+    "prep_time": 30,
+    "instructions": "Mix minced lamb with spices, form on skewers, grill, serve in bread with yogurt."
+  },
+  {
+    "id": 34,
+    "name": "Fried Egg with Toast",
+    "cuisine": "Universal",
+    "ingredients": ["egg", "bread", "butter", "salt", "pepper"],
+    "prep_time": 5,
+    "instructions": "Fry egg in butter, toast bread, serve together with salt and pepper."
+  },
+  {
+    "id": 35,
+    "name": "Chocolate Milkshake",
+    "cuisine": "Universal",
+    "ingredients": ["milk", "chocolate", "ice cream", "sugar"],
+    "prep_time": 5,
+    "instructions": "Blend milk, chocolate, ice cream until smooth and thick."
+  },
+  {
+    "id": 36,
+    "name": "Potato Curry",
+    "cuisine": "Indian",
+    "ingredients": ["potato", "onion", "tomato", "garlic", "ginger", "spices", "oil"],
+    "prep_time": 35,
+    "instructions": "Fry onion and spices, add potato and tomato, simmer until potatoes are soft."
+  },
+  {
+    "id": 37,
+    "name": "Tom Yum Soup",
+    "cuisine": "Thai",
+    "ingredients": ["shrimp", "mushroom", "lemongrass", "lime", "chili", "garlic", "fish sauce"],
+    "prep_time": 25,
+    "instructions": "Boil broth with lemongrass, add shrimp and mushrooms, finish with lime and chili."
+  },
+  {
+    "id": 38,
+    "name": "Chicken Quesadilla",
+    "cuisine": "Mexican",
+    "ingredients": ["chicken", "tortilla", "cheese", "bell pepper", "onion", "salsa"],
+    "prep_time": 15,
+    "instructions": "Fill tortilla with chicken, cheese, and peppers, cook on both sides until crispy."
+  },
+  {
+    "id": 39,
+    "name": "Vegetable Soup",
+    "cuisine": "Universal",
+    "ingredients": ["potato", "carrot", "onion", "celery", "garlic", "tomato", "salt"],
+    "prep_time": 35,
+    "instructions": "Sauté vegetables, add broth, simmer until all vegetables are tender."
+  },
+  {
+    "id": 40,
+    "name": "Tuna Sandwich",
+    "cuisine": "Western",
+    "ingredients": ["bread", "tuna", "mayo", "lettuce", "tomato", "onion"],
+    "prep_time": 10,
+    "instructions": "Mix tuna with mayo, layer on bread with lettuce, tomato, and onion."
+  },
+  {
+    "id": 41,
+    "name": "Beef Stir Fry",
+    "cuisine": "Asian",
+    "ingredients": ["beef", "soy sauce", "broccoli", "garlic", "ginger", "rice", "oil"],
+    "prep_time": 20,
+    "instructions": "Slice beef thin, stir-fry with garlic and ginger, add broccoli and soy sauce."
+  },
+  {
+    "id": 42,
+    "name": "Fruit Salad",
+    "cuisine": "Universal",
+    "ingredients": ["apple", "banana", "orange", "honey", "lemon"],
+    "prep_time": 10,
+    "instructions": "Chop fruits, mix with honey and lemon juice, serve chilled."
+  },
+  {
+    "id": 43,
+    "name": "Egg Fried Noodles",
+    "cuisine": "Asian",
+    "ingredients": ["noodles", "egg", "soy sauce", "onion", "garlic", "oil", "vegetables"],
+    "prep_time": 15,
+    "instructions": "Cook noodles, stir-fry with scrambled egg, vegetables, and soy sauce."
+  },
+  {
+    "id": 44,
+    "name": "Honey Garlic Chicken",
+    "cuisine": "Asian",
+    "ingredients": ["chicken", "honey", "garlic", "soy sauce", "ginger", "rice"],
+    "prep_time": 30,
+    "instructions": "Coat chicken in honey-garlic-soy glaze, bake until caramelized, serve with rice."
+  },
+  {
+    "id": 45,
+    "name": "Cheese Pasta",
+    "cuisine": "Italian",
+    "ingredients": ["pasta", "cheese", "butter", "milk", "garlic", "pepper"],
+    "prep_time": 15,
+    "instructions": "Cook pasta, make cheese sauce with butter, milk, and garlic, combine."
+  }
+]
