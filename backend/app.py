@@ -179,8 +179,9 @@ def train():
 @app.route('/api/upload', methods=['POST'])
 def upload_csv():
     """
-    Upload CSV dataset for analysis and retraining.
-    Returns cleaning report and basic stats.
+    Upload CSV dataset for analysis.
+    Validates columns, shows cleaning report.
+    Only replaces main dataset if columns match exactly.
     """
     try:
         if 'file' not in request.files:
@@ -190,7 +191,7 @@ def upload_csv():
         if not file.filename.endswith(('.csv', '.xlsx')):
             return jsonify({"error": "Only CSV and XLSX files are supported"}), 400
         
-        # Save uploaded file
+        # Save uploaded file with timestamp
         upload_dir = os.path.join(DATA_DIR, "raw")
         os.makedirs(upload_dir, exist_ok=True)
         filepath = os.path.join(upload_dir, f"upload_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv")
@@ -200,8 +201,18 @@ def upload_csv():
         df = load_raw_data(filepath)
         original_shape = df.shape
         
+        # Required columns check
+        required_columns = [
+            'date', 'food_item', 'meals_served', 'temp_c', 'is_holiday',
+            'day_of_week', 'waste_kg', 'checkout_price', 'base_price',
+            'emailer_for_promotion', 'homepage_featured'
+        ]
+        uploaded_columns = list(df.columns)
+        missing_cols = [c for c in required_columns if c not in uploaded_columns]
+        columns_match = len(missing_cols) == 0
+        
         # Cleaning stats
-        n_duplicates = df.duplicated().sum()
+        n_duplicates = int(df.duplicated().sum())
         missing_per_col = df.isnull().sum().to_dict()
         total_missing = int(df.isnull().sum().sum())
         
@@ -214,38 +225,36 @@ def upload_csv():
         os.makedirs(os.path.dirname(clean_path), exist_ok=True)
         df_clean.to_csv(clean_path, index=False)
         
-        # Also save as the main raw data (so dashboard and predict use this data)
-        main_data_path = os.path.join(DATA_DIR, "raw", "smartkitchen_ai_dataset.csv")
-        df.to_csv(main_data_path, index=False)
-        
-        # AUTO-RETRAIN: Retrain models with the new uploaded data
-        train_report = None
-        try:
-            from train_model import train_models
-            train_report = train_models(main_data_path)
-            global models
-            models = load_models()
-        except Exception as train_err:
-            train_report = {"error": str(train_err)}
+        # Only replace main dataset if columns match
+        replaced = False
+        if columns_match:
+            main_data_path = os.path.join(DATA_DIR, "raw", "smartkitchen_ai_dataset.csv")
+            df.to_csv(main_data_path, index=False)
+            replaced = True
+            # Retrain models
+            try:
+                from train_model import train_models
+                train_models(main_data_path)
+                global models
+                models = load_models()
+            except Exception:
+                pass
         
         return jsonify({
             "status": "success",
             "filename": file.filename,
             "original_rows": int(original_shape[0]),
             "original_columns": int(original_shape[1]),
-            "columns": list(df.columns),
-            "duplicates_found": int(n_duplicates),
+            "columns": uploaded_columns,
+            "columns_match": columns_match,
+            "missing_required_columns": missing_cols,
+            "main_dataset_replaced": replaced,
+            "duplicates_found": n_duplicates,
             "duplicates_removed": int(n_dupes),
             "missing_values": {k: int(v) for k, v in missing_per_col.items() if v > 0},
             "total_missing_cells": total_missing,
             "cleaned_rows": len(df_clean),
             "cleaning_report": missing_report,
-            "saved_to": clean_path,
-            "model_retrained": train_report is not None and "error" not in (train_report or {}),
-            "training_result": {
-                "rf_r2": train_report.get("random_forest", {}).get("r2_score") if train_report and "error" not in train_report else None,
-                "lr_r2": train_report.get("linear_regression", {}).get("r2_score") if train_report and "error" not in train_report else None,
-            } if train_report else None,
         })
     
     except Exception as e:

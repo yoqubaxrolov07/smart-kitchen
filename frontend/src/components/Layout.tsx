@@ -1,6 +1,6 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { 
-  BarChart3, Upload, GitCompare, Workflow, 
+  BarChart3, Upload, Brain,
   ChefHat, Play, Home, ArrowLeft 
 } from 'lucide-react';
 
@@ -10,10 +10,8 @@ interface LayoutProps {
 
 const businessNav = [
   { path: '/business', label: 'Dashboard', icon: BarChart3 },
-  { path: '/business/predict', label: 'AI Predict', icon: Workflow },
+  { path: '/business/predict', label: 'AI Predict', icon: Brain },
   { path: '/business/upload', label: 'Upload CSV', icon: Upload },
-  { path: '/business/compare', label: 'Compare Models', icon: GitCompare },
-  { path: '/business/pipeline', label: 'AI Pipeline', icon: Workflow },
 ];
 
 const personalNav = [

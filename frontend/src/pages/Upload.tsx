@@ -44,7 +44,15 @@ export default function Upload() {
           <UploadIcon className="text-blue-500" />
           Upload Dataset
         </h1>
-        <p className="text-gray-500 mt-1">Upload your restaurant data (CSV/XLSX) for analysis and model training</p>
+        <p className="text-gray-500 mt-1">Upload your restaurant data (CSV/XLSX) — must match required columns</p>
+      </div>
+
+      {/* Required Format */}
+      <div className="card bg-blue-50 border-blue-100">
+        <h3 className="font-semibold text-blue-900 mb-2">📖 Required CSV Columns</h3>
+        <code className="text-xs bg-white p-3 rounded block text-blue-800 break-all">
+          date, food_item, meals_served, temp_c, is_holiday, day_of_week, waste_kg, checkout_price, base_price, emailer_for_promotion, homepage_featured
+        </code>
       </div>
 
       {/* Upload Zone */}
@@ -63,22 +71,13 @@ export default function Upload() {
               <FileSpreadsheet size={48} className="mx-auto text-emerald-500" />
               <div>
                 <p className="font-semibold text-lg">{file.name}</p>
-                <p className="text-sm text-gray-500">
-                  {(file.size / 1024).toFixed(1)} KB
-                </p>
+                <p className="text-sm text-gray-500">{(file.size / 1024).toFixed(1)} KB</p>
               </div>
               <div className="flex gap-3 justify-center">
-                <button
-                  onClick={handleUpload}
-                  disabled={loading}
-                  className="btn-primary flex items-center gap-2"
-                >
-                  {loading ? '⏳ Processing...' : '🚀 Upload & Analyze'}
+                <button onClick={handleUpload} disabled={loading} className="btn-primary">
+                  {loading ? 'Processing...' : 'Upload & Analyze'}
                 </button>
-                <button
-                  onClick={() => { setFile(null); setResult(null); }}
-                  className="px-4 py-2.5 border border-gray-200 rounded-lg hover:bg-gray-50"
-                >
+                <button onClick={() => { setFile(null); setResult(null); }} className="px-4 py-2.5 border border-gray-200 rounded-lg hover:bg-gray-50">
                   <X size={18} />
                 </button>
               </div>
@@ -90,10 +89,7 @@ export default function Upload() {
                 <p className="font-medium text-lg">Drag and drop your CSV file here</p>
                 <p className="text-sm text-gray-400">or click to browse</p>
               </div>
-              <button
-                onClick={() => inputRef.current?.click()}
-                className="btn-secondary"
-              >
+              <button onClick={() => inputRef.current?.click()} className="btn-secondary">
                 Choose File
               </button>
             </div>
@@ -119,25 +115,37 @@ export default function Upload() {
       {/* Results */}
       {result && (
         <div className="space-y-6">
-          {/* Success Header */}
-          <div className="card bg-emerald-50 border-emerald-200">
-            <div className="flex items-center gap-3">
-              <CheckCircle className="text-emerald-500" size={24} />
-              <div>
-                <p className="font-semibold text-emerald-800">Upload Successful!</p>
-                <p className="text-sm text-emerald-600">
-                  File "{result.filename}" processed — {result.original_rows} rows, {result.original_columns} columns
-                </p>
-                {result.model_retrained && (
-                  <p className="text-sm text-emerald-700 font-medium mt-1">
-                    🧠 Model automatically retrained with new data! (RF R²: {result.training_result?.rf_r2?.toFixed(3)})
+          {/* Status */}
+          {result.columns_match ? (
+            <div className="card bg-emerald-50 border-emerald-200">
+              <div className="flex items-center gap-3">
+                <CheckCircle className="text-emerald-500" size={24} />
+                <div>
+                  <p className="font-semibold text-emerald-800">Upload Successful — Dataset Replaced</p>
+                  <p className="text-sm text-emerald-600">
+                    {result.original_rows} rows loaded. Dashboard and AI Predict now use this data.
                   </p>
-                )}
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="card bg-yellow-50 border-yellow-200">
+              <div className="flex items-start gap-3">
+                <AlertCircle className="text-yellow-500 flex-shrink-0 mt-0.5" size={24} />
+                <div>
+                  <p className="font-semibold text-yellow-800">Columns do not match — Dataset NOT replaced</p>
+                  <p className="text-sm text-yellow-700 mt-1">
+                    Missing required columns: <strong>{result.missing_required_columns?.join(', ')}</strong>
+                  </p>
+                  <p className="text-sm text-yellow-700 mt-1">
+                    The cleaning report below is shown, but the main dataset and dashboard remain unchanged.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
 
-          {/* Cleaning Report */}
+          {/* Cleaning Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="card text-center">
               <p className="text-sm text-gray-500">Duplicates Found</p>
@@ -156,9 +164,9 @@ export default function Upload() {
             </div>
           </div>
 
-          {/* Column Details */}
+          {/* Detected Columns */}
           <div className="card">
-            <h3 className="font-semibold text-lg mb-4">📋 Data Columns Detected</h3>
+            <h3 className="font-semibold text-lg mb-4">Detected Columns</h3>
             <div className="flex flex-wrap gap-2">
               {result.columns.map((col: string) => (
                 <span key={col} className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
@@ -168,10 +176,10 @@ export default function Upload() {
             </div>
           </div>
 
-          {/* Missing Values Detail */}
+          {/* Missing per column */}
           {Object.keys(result.missing_values).length > 0 && (
             <div className="card">
-              <h3 className="font-semibold text-lg mb-4">🔧 Missing Values (per column)</h3>
+              <h3 className="font-semibold text-lg mb-4">Missing Values by Column</h3>
               <div className="space-y-2">
                 {Object.entries(result.missing_values).map(([col, count]: [string, any]) => (
                   <div key={col} className="flex items-center justify-between p-2 bg-gray-50 rounded">
@@ -184,15 +192,6 @@ export default function Upload() {
           )}
         </div>
       )}
-
-      {/* Guide */}
-      <div className="card bg-blue-50 border-blue-100">
-        <h3 className="font-semibold text-blue-900 mb-2">📖 Expected CSV Format</h3>
-        <p className="text-sm text-blue-700 mb-3">Your CSV should contain these columns:</p>
-        <code className="text-xs bg-blue-100 p-3 rounded block text-blue-800">
-          date, food_item, meals_served, temp_c, is_holiday, day_of_week, waste_kg, checkout_price, base_price, emailer_for_promotion, homepage_featured
-        </code>
-      </div>
     </div>
   );
 }
