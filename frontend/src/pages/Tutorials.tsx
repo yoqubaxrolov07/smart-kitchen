@@ -174,10 +174,10 @@ export default function Tutorials() {
               </span>
             </div>
 
-            {/* Recipe Preview */}
-            <div className="mt-3 p-3 bg-emerald-50 rounded-lg">
-              <p className="text-xs text-emerald-700 font-medium">📝 Recipe:</p>
-              <p className="text-xs text-emerald-600 mt-1 line-clamp-2">{tutorial.recipe}</p>
+            {/* Recipe - Always Visible */}
+            <div className="mt-3 p-3 bg-emerald-50 rounded-lg border border-emerald-100">
+              <p className="text-sm text-emerald-700 font-semibold mb-1">📝 Recipe:</p>
+              <p className="text-sm text-emerald-800">{tutorial.recipe}</p>
             </div>
           </div>
         ))}
