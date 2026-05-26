@@ -265,11 +265,29 @@ def upload_csv():
 def get_stats():
     """Get dataset statistics for dashboard."""
     try:
+        if not os.path.exists(RAW_DATA):
+            return jsonify({"error": f"Dataset file not found at {RAW_DATA}. Please run scripts/generate_dataset.py to create it."}), 500
+        
         df = pd.read_csv(RAW_DATA)
+        
+        # Validate required columns
+        required = ['date', 'food_item', 'meals_served', 'temp_c', 'is_holiday', 
+                   'day_of_week', 'waste_kg', 'checkout_price', 'base_price',
+                   'emailer_for_promotion', 'homepage_featured']
+        missing_cols = [c for c in required if c not in df.columns]
+        if missing_cols:
+            return jsonify({
+                "error": f"Dataset is missing required columns: {missing_cols}. Please restore the original dataset.",
+                "found_columns": list(df.columns),
+                "hint": "Run: git checkout data/raw/smartkitchen_ai_dataset.csv"
+            }), 500
         
         # Clean first
         df = df.drop_duplicates()
         df = df.dropna(subset=['waste_kg', 'meals_served'])
+        
+        if len(df) == 0:
+            return jsonify({"error": "Dataset is empty after cleaning. Please check your data."}), 500
         
         # Basic KPIs
         total_waste = float(df['waste_kg'].sum())

@@ -25,11 +25,17 @@ interface StatsData {
 export default function Dashboard() {
   const [stats, setStats] = useState<StatsData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string>('');
 
   useEffect(() => {
     getStats()
       .then(res => setStats(res.data))
-      .catch(console.error)
+      .catch(err => {
+        const msg = err?.response?.data?.error || err?.message || 'Unknown error';
+        const hint = err?.response?.data?.hint || '';
+        setErrorMsg(`${msg}${hint ? '\n\nFix: ' + hint : ''}`);
+        console.error('Stats error:', err);
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -42,7 +48,17 @@ export default function Dashboard() {
   }
 
   if (!stats) {
-    return <div className="text-center text-red-500">Failed to load dashboard data</div>;
+    return (
+      <div className="max-w-3xl mx-auto">
+        <div className="card bg-red-50 border-red-200">
+          <h3 className="font-semibold text-red-800 text-lg mb-2">Failed to load dashboard data</h3>
+          <pre className="text-sm text-red-700 whitespace-pre-wrap">{errorMsg}</pre>
+          <p className="text-xs text-red-500 mt-4">
+            Make sure the backend is running on port 5000 and data/raw/smartkitchen_ai_dataset.csv exists.
+          </p>
+        </div>
+      </div>
+    );
   }
 
   const { kpis, weekly_trends, holiday_impact, temperature_impact, day_of_week_trends, top_waste_foods } = stats;
