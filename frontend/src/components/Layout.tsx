@@ -1,7 +1,7 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { 
   BarChart3, Upload, GitCompare, Workflow, 
-  ChefHat, MessageCircle, Home, ArrowLeft 
+  ChefHat, Play, Home, ArrowLeft 
 } from 'lucide-react';
 
 interface LayoutProps {
@@ -18,7 +18,7 @@ const businessNav = [
 
 const personalNav = [
   { path: '/personal', label: 'Recipe Finder', icon: ChefHat },
-  { path: '/personal/assistant', label: 'AI Assistant', icon: MessageCircle },
+  { path: '/personal/tutorials', label: 'Tutorials', icon: Play },
 ];
 
 export default function Layout({ mode }: LayoutProps) {

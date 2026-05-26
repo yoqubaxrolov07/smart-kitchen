@@ -6,7 +6,7 @@ import Upload from './pages/Upload';
 import CompareModels from './pages/CompareModels';
 import Pipeline from './pages/Pipeline';
 import Recipes from './pages/Recipes';
-import Assistant from './pages/Assistant';
+import Tutorials from './pages/Tutorials';
 import Landing from './pages/Landing';
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
         </Route>
         <Route path="/personal" element={<Layout mode="personal" />}>
           <Route index element={<Recipes />} />
-          <Route path="assistant" element={<Assistant />} />
+          <Route path="tutorials" element={<Tutorials />} />
         </Route>
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
